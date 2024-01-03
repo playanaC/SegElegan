@@ -182,7 +182,9 @@ def get_image_network(device, dir_checkpoint, in_size, net, image_gray, batch_im
     del model, img_i1, img_i2, masK_crops
     gc.collect()
     torch.cuda.empty_cache()
-    return predict_seg, predict_skl
+    predict_seg1 = np.copy(predict_seg)
+    predict_seg1[:, :, 2] = (cv2.bitwise_and(cv2.bitwise_not(predict_seg[:, :, 1]), predict_seg[:, :, 2]))
+    return predict_seg1, predict_skl
 
 
 def build_edge(image_bw):
